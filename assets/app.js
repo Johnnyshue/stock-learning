@@ -58,6 +58,24 @@ function renderSidebar() {
   }
 }
 
+// === 漢堡選單（mobile）===
+function setupMenuToggle() {
+  const btn = document.getElementById("menu-toggle");
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebar-overlay");
+  if (!btn || !sidebar || !overlay) return;
+
+  function open() { sidebar.classList.add("open"); overlay.classList.add("show"); }
+  function close() { sidebar.classList.remove("open"); overlay.classList.remove("show"); }
+  btn.addEventListener("click", () => sidebar.classList.contains("open") ? close() : open());
+  overlay.addEventListener("click", close);
+  // 點任何側邊欄連結後自動收起（手機）
+  sidebar.addEventListener("click", (e) => {
+    if (e.target.tagName === "A" && window.innerWidth <= 768) close();
+  });
+}
+setupMenuToggle();
+
 // === Router ===
 window.addEventListener("hashchange", handleRoute);
 

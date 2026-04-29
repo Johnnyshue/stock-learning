@@ -281,8 +281,61 @@ body {
 .pattern-legend span { display: inline-flex; align-items: center; gap: 0.3rem; }
 .pattern-legend .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 
+/* === 漢堡按鈕（mobile only）=== */
+#menu-toggle {
+  display: none;
+  position: fixed;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 1000;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+}
+#sidebar-overlay.show { display: block; }
+
 /* === 響應式 === */
 @media (max-width: 768px) {
-  #sidebar { position: static; width: 100%; height: auto; }
-  #content { margin-left: 0; padding: 1.5rem; }
+  #menu-toggle { display: flex; }
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 999;
+    width: 80%;
+    max-width: 320px;
+  }
+  #sidebar.open { transform: translateX(0); }
+  #content {
+    margin-left: 0;
+    padding: 4rem 1.2rem 2rem;
+    max-width: 100%;
+  }
+  /* 主圖手機高度縮小 */
+  #chart-main { height: 320px !important; }
+  #chart-rsi, #chart-macd { height: 100px !important; }
+  /* 控制列換行 */
+  .lab-controls { flex-direction: column; align-items: stretch; }
+  .lab-controls label, .lab-controls .toggle { width: 100%; }
+  /* 內容字級 */
+  #content h1 { font-size: 1.5rem; }
+  #content h2 { font-size: 1.3rem; }
+  #content table { font-size: 0.82rem; }
+  /* 表格水平捲動 */
+  #content { overflow-x: hidden; }
+  #content table { display: block; overflow-x: auto; white-space: nowrap; }
 }
