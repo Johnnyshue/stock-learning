@@ -13,12 +13,13 @@ let chartObjects = null; // { mainChart, rsiChart, macdChart, series... }
 // === 初始化 ===
 async function init() {
   try {
+    const noCache = { cache: "no-store" };
     const [m, ex, di] = await Promise.all([
-      fetch("content/manifest.json").then((r) => r.json()),
-      fetch("extra/manifest.json")
+      fetch("content/manifest.json", noCache).then((r) => r.json()),
+      fetch("extra/manifest.json", noCache)
         .then((r) => (r.ok ? r.json() : { extras: [] }))
         .catch(() => ({ extras: [] })),
-      fetch("data/_index.json").then((r) => r.json()),
+      fetch("data/_index.json", noCache).then((r) => r.json()),
     ]);
     manifest = m;
     extras = ex.extras || [];
@@ -95,6 +96,7 @@ function handleRoute() {
   if (route === "quiz") return window.renderQuiz(contentEl, dataIndex);
   if (route === "patterns") return window.renderPatterns(contentEl, dataIndex);
   if (route === "backtest") return window.renderBacktest(contentEl, dataIndex);
+  if (route === "fire") return window.renderFire(contentEl);
   if (route.startsWith("extra/")) return renderExtra(route.slice(6));
   return renderChapter(route);
 }
@@ -114,7 +116,7 @@ async function renderChapter(order) {
     return;
   }
   contentEl.innerHTML = `<div class="loader">載入 ${chapter.title}…</div>`;
-  const md = await fetch(`content/${chapter.file}`).then((r) => r.text());
+  const md = await fetch(`content/${chapter.file}`, { cache: "no-store" }).then((r) => r.text());
   // 移除 frontmatter 註解
   const cleaned = md.replace(/^<!--[\s\S]*?-->\s*/m, "");
   contentEl.innerHTML = marked.parse(cleaned);
@@ -134,7 +136,7 @@ async function renderExtra(id) {
     contentEl.innerHTML = `<p>找不到：${id}</p>`;
     return;
   }
-  const md = await fetch(`extra/${item.file}`).then((r) => r.text());
+  const md = await fetch(`extra/${item.file}`, { cache: "no-store" }).then((r) => r.text());
   contentEl.innerHTML = marked.parse(md);
   window.scrollTo(0, 0);
 }

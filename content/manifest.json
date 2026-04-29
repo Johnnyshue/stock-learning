@@ -61,6 +61,16 @@
       "title": "Ch10 醫師專屬投資策略"
     },
     {
+      "order": "11",
+      "file": "ch11_journey.md",
+      "title": "Ch11 醫師財務自由路線圖"
+    },
+    {
+      "order": "12",
+      "file": "ch12_traps.md",
+      "title": "Ch12 投資陷阱與詐騙樣本庫"
+    },
+    {
       "order": "99",
       "file": "ch_appendix.md",
       "title": "附錄 推薦學習資源"
