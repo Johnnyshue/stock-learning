@@ -31,6 +31,21 @@
       "title": "Ch5 ETF 完全攻略"
     },
     {
+      "order": "05b",
+      "file": "ch05b_funds_basics.md",
+      "title": "Ch5.1 基金分類與費用結構（Bogle 篇）"
+    },
+    {
+      "order": "05c",
+      "file": "ch05c_active_passive.md",
+      "title": "Ch5.2 主動 vs 被動 + 基金挑選實戰"
+    },
+    {
+      "order": "05d",
+      "file": "ch05d_dca_tax_traps.md",
+      "title": "Ch5.3 定期定額 + 稅務 + 陷阱"
+    },
+    {
       "order": "06",
       "file": "ch06_passive.md",
       "title": "Ch6 被動投資與定期定額"
