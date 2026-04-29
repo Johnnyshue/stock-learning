@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -40,6 +39,16 @@ SOURCES = [
         "title": "Yahoo Finance - Top Stories",
         "url": "https://finance.yahoo.com/news/rssindex",
         "desc": "美股每日重點新聞。",
+    },
+]
+
+# 靜態筆記：手動寫的 markdown，不從 RSS 抓，但要保留在 manifest 中。
+# 檔案需事先放在 extra/<file> 內。
+STATIC_EXTRAS = [
+    {
+        "id": "community_digest",
+        "title": "社群討論精華（PTT + Mobile01）",
+        "file": "community_digest.md",
     },
 ]
 
@@ -124,6 +133,27 @@ def scrape_one(src: dict, max_items: int = 20) -> dict | None:
     return {"id": src["id"], "title": src["title"], "file": fname, "count": len(items)}
 
 
+def collect_static() -> list[dict]:
+    """收集靜態筆記（手動寫好放在 extra/ 的 md），不重抓但要保留進 manifest。"""
+    out = []
+    for s in STATIC_EXTRAS:
+        path = OUT / s["file"]
+        if not path.exists():
+            print(f"  ⚠️  靜態筆記找不到：{s['file']}（跳過）")
+            continue
+        # 算「條目數」：以 markdown 中 `## ` 一級小節數量為近似
+        try:
+            text = path.read_text(encoding="utf-8")
+            count = sum(1 for line in text.splitlines() if line.startswith("## "))
+        except Exception:
+            count = 0
+        out.append(
+            {"id": s["id"], "title": s["title"], "file": s["file"], "count": count}
+        )
+        print(f"  ✓ 靜態：{s['id']} ({count} 節)")
+    return out
+
+
 def main():
     print(f"📰 爬 {len(SOURCES)} 個來源：")
     results = []
@@ -131,6 +161,10 @@ def main():
         r = scrape_one(src)
         if r:
             results.append(r)
+
+    if STATIC_EXTRAS:
+        print(f"\n📝 收集 {len(STATIC_EXTRAS)} 篇靜態筆記：")
+        results.extend(collect_static())
 
     manifest = {"extras": results, "updated": datetime.now().strftime("%Y-%m-%d %H:%M")}
     (OUT / "manifest.json").write_text(

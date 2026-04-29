@@ -17,7 +17,13 @@
       "title": "Yahoo Finance - Top Stories",
       "file": "yahoo_us_finance.md",
       "count": 20
+    },
+    {
+      "id": "community_digest",
+      "title": "社群討論精華（PTT + Mobile01）",
+      "file": "community_digest.md",
+      "count": 7
     }
   ],
-  "updated": "2026-04-29 10:11"
+  "updated": "2026-04-29 22:50"
 }
