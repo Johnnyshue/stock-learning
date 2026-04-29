@@ -455,7 +455,7 @@ function renderCheatsheet() {
 function renderAbout() {
   contentEl.innerHTML = `
     <h1>關於</h1>
-    <p>給徐嘉佑（TSGH PGY）的個人股票學習筆記。</p>
+    <p>個人股票學習筆記。</p>
     <h3>更新方式</h3>
     <pre><code>cd ~/claude_projects/股票/
 ./update.sh        # 抓最新資料 + 重新切章節
