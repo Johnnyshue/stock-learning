@@ -69,9 +69,14 @@ function setupMenuToggle() {
   function close() { sidebar.classList.remove("open"); overlay.classList.remove("show"); }
   btn.addEventListener("click", () => sidebar.classList.contains("open") ? close() : open());
   overlay.addEventListener("click", close);
-  // 點任何側邊欄連結後自動收起（手機）
+  // 任何路由變化（點章節、互動工具）都收起 sidebar — 手機才收
+  window.addEventListener("hashchange", () => {
+    if (window.matchMedia("(max-width: 768px)").matches) close();
+  });
+  // 額外：直接點 sidebar 的連結也立即收（hashchange 有微小延遲）
   sidebar.addEventListener("click", (e) => {
-    if (e.target.tagName === "A" && window.innerWidth <= 768) close();
+    const a = e.target.closest("a[href^='#']");
+    if (a && window.matchMedia("(max-width: 768px)").matches) close();
   });
 }
 setupMenuToggle();
