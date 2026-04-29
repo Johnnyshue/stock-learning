@@ -1,0 +1,69 @@
+{
+  "chapters": [
+    {
+      "order": "00",
+      "file": "ch00_mindset.md",
+      "title": "Ch0 投資前的心態建設"
+    },
+    {
+      "order": "01",
+      "file": "ch01_basics.md",
+      "title": "Ch1 金融市場基礎知識"
+    },
+    {
+      "order": "02",
+      "file": "ch02_tw_stock.md",
+      "title": "Ch2 台股入門"
+    },
+    {
+      "order": "03",
+      "file": "ch03_account.md",
+      "title": "Ch3 開戶與第一筆交易"
+    },
+    {
+      "order": "04",
+      "file": "ch04_us_stock.md",
+      "title": "Ch4 美股與全球市場"
+    },
+    {
+      "order": "05",
+      "file": "ch05_etf.md",
+      "title": "Ch5 ETF 完全攻略"
+    },
+    {
+      "order": "06",
+      "file": "ch06_passive.md",
+      "title": "Ch6 被動投資與定期定額"
+    },
+    {
+      "order": "07",
+      "file": "ch07_fundamental.md",
+      "title": "Ch7 基本面分析——主動選股"
+    },
+    {
+      "order": "08",
+      "file": "ch08_technical.md",
+      "title": "Ch8 技術分析入門（K 線・MA・RSI・MACD）"
+    },
+    {
+      "order": "08b",
+      "file": "ch08b_kline_interactive.md",
+      "title": "Ch8.5 互動 K 線實戰"
+    },
+    {
+      "order": "09",
+      "file": "ch09_allocation.md",
+      "title": "Ch9 資產配置與投資組合"
+    },
+    {
+      "order": "10",
+      "file": "ch10_doctor.md",
+      "title": "Ch10 醫師專屬投資策略"
+    },
+    {
+      "order": "99",
+      "file": "ch_appendix.md",
+      "title": "附錄 推薦學習資源"
+    }
+  ]
+}

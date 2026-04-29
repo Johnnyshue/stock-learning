@@ -1,0 +1,23 @@
+{
+  "extras": [
+    {
+      "id": "lvjiao_blog",
+      "title": "綠角財經筆記（最新文章）",
+      "file": "lvjiao_blog.md",
+      "count": 20
+    },
+    {
+      "id": "yahoo_tw_finance",
+      "title": "Yahoo 奇摩股市 - 台股新聞",
+      "file": "yahoo_tw_finance.md",
+      "count": 20
+    },
+    {
+      "id": "yahoo_us_finance",
+      "title": "Yahoo Finance - Top Stories",
+      "file": "yahoo_us_finance.md",
+      "count": 20
+    }
+  ],
+  "updated": "2026-04-29 10:11"
+}
