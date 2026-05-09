@@ -136,6 +136,26 @@
       "title": "Ch22 房地產 vs 股票真相對比（醫師包租公的數學現實）"
     },
     {
+      "order": "23",
+      "file": "ch23_family_estate.md",
+      "title": "Ch23 配偶/家庭/遺產規劃（醫師中後期最該想）"
+    },
+    {
+      "order": "24",
+      "file": "ch24_insurance_complete.md",
+      "title": "Ch24 醫師保險完全攻略（失能險/實支實付/壽險/長照）"
+    },
+    {
+      "order": "25",
+      "file": "ch25_withdrawal_strategy.md",
+      "title": "Ch25 退休提領策略——4% 法則的科學與限制"
+    },
+    {
+      "order": "26",
+      "file": "ch26_macro_indicators.md",
+      "title": "Ch26 全球宏觀指標解讀（GDP/CPI/PMI/利率/失業率）"
+    },
+    {
       "order": "99",
       "file": "ch_appendix.md",
       "title": "附錄 推薦學習資源"
