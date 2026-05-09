@@ -86,6 +86,26 @@
       "title": "Ch12 投資陷阱與詐騙樣本庫"
     },
     {
+      "order": "13",
+      "file": "ch13_market_narrative.md",
+      "title": "Ch13 怎麼讀懂「台股大漲」這類新聞"
+    },
+    {
+      "order": "14",
+      "file": "ch14_efficient_market.md",
+      "title": "Ch14 為什麼預測不可能（EMH + 行為金融學）"
+    },
+    {
+      "order": "15",
+      "file": "ch15_skill_tree.md",
+      "title": "Ch15 股票達人能力樹（5 大支柱 × 段位）"
+    },
+    {
+      "order": "16",
+      "file": "ch16_evidence_library.md",
+      "title": "Ch16 股票界權威 Evidence 庫（DOI 全驗證）"
+    },
+    {
       "order": "99",
       "file": "ch_appendix.md",
       "title": "附錄 推薦學習資源"
