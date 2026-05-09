@@ -116,6 +116,26 @@
       "title": "Ch18 投資書評鑑——分級推薦 vs 警示（含富爸爸窮爸爸批判）"
     },
     {
+      "order": "19",
+      "file": "ch19_tax_guide.md",
+      "title": "Ch19 醫師投資稅務完全攻略（健保補充費 + 海外所得 + 美股股息）"
+    },
+    {
+      "order": "20",
+      "file": "ch20_bear_market_survival.md",
+      "title": "Ch20 空頭/熊市生存指南——心理紀律的試金石"
+    },
+    {
+      "order": "21",
+      "file": "ch21_crypto_assessment.md",
+      "title": "Ch21 加密貨幣理性評估（學術 + 學界共識）"
+    },
+    {
+      "order": "22",
+      "file": "ch22_real_estate_vs_stocks.md",
+      "title": "Ch22 房地產 vs 股票真相對比（醫師包租公的數學現實）"
+    },
+    {
       "order": "99",
       "file": "ch_appendix.md",
       "title": "附錄 推薦學習資源"
