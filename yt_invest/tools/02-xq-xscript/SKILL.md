@@ -42,41 +42,58 @@ description: >
 ## XScript 是什麼（背景，誠實版）
 
 - XQ全球贏家（嘉實資訊）內建的腳本語言，用來寫**選股條件**與**交易策略/回測**。
-- 語法風格類似 Pascal / EasyLanguage（`if ... then ... ;`、`Condition1 = ...`、`ret`/`Filter` 等）。
-- **以下這些是我「相對有把握」的通用慣例**（多數版本通用，但仍請以你的 XQ 編譯結果為準）：
-  - 取技術指標常用形式類似 `GetField(...)`、或直接函數 `KD(...)`、`MA(...)`、`Volume`、`Close`。
-  - 選股腳本最後通常用一個布林條件決定該股是否入選（例如 `outputfield1 := ...;` 或 `ret;` / `Filter := ...;`）。
-- **以下這些是我「沒把握、必須你去 XQ 確認」的**（生成時一律加 TODO 註解）：
-  - 月 KD（月線週期 KD）的確切取法 —— 跨週期取值在不同版本寫法差很多。
-  - 現金殖利率、股價淨值比 PBR、本益比 PER 這類**基本面欄位**的內建變數/函數名。
-  - VIX 等**外部指數**在 XScript 內的引用代號（VIX 是美股恐慌指數，台股 XScript 能否直接取值我不確定）。
+- 語法風格類似 Pascal / EasyLanguage（`if ... then ... ;`、`Condition1 = ...`、`Ret = 1;` 等）。
+- 部分語法已查到**官方來源**（見下方「已驗證 vs 待確認」表），可直接用；
+  仍有部分（基本面欄位字串）查不到官方來源，一律保留 TODO，不得用非官方舊文字串假裝正確。
 
 ---
 
-## 自然語言 → XScript 條件對照表
+## 已驗證語法 vs 待確認（核心對照表）
 
-> ⚠️ 右欄函數名為 **best-effort**，不是官方保證。標 `❓` 者是我較沒把握、務必去 XQ 編譯確認的。
+> 來源網域：
+> - **xshelp.xq.com.tw** — XScript 官方說明文件
+> - **github.com/sysjust-xq/XScript_Preset** — 嘉實官方 XScript 範例庫
+> - **forum.xq.com.tw** — XQ 官方論壇
+>
+> ✅ high 信心 = 有官方來源，可直接用（仍須在 XQ 按【編譯】最終確認）。
+> ❓ low / 查不到 = **保留 TODO**，請在 XQ 選股編輯器輸入 `GetField("` 看自動補全確認欄位名，不要亂填。
 
-| 使用者口語條件 | XScript 可能寫法（best-effort） | 信心 |
+### ✅ 已驗證（high，官方來源）
+
+| 條件 | 官方語法 | 來源 |
 |---|---|---|
-| 收盤價 | `Close` | 高 |
-| 開/高/低 | `Open` / `High` / `Low` | 高 |
-| 成交量 | `Volume` | 高 |
-| N 日均線 | `Average(Close, N)` 或 `MA(Close, N)` | 中 |
-| 站上季線（60MA） | `Close > Average(Close, 60)` | 中 |
-| 黃金交叉（短均上穿長均） | `CrossOver(Average(Close,5), Average(Close,20))` ❓ | 中 |
-| 量增（今量 > N 日均量 ×倍數） | `Volume > Average(Volume, 20) * 1.5` | 中 |
-| KD 指標 | `Value1 = KD(9,3,3);`（取 K、D 的寫法 ❓） | 低❓ |
-| 月 KD 低檔 | 跨週期取月 K → `// TODO: 確認 XQ 月週期 KD 取值寫法` ❓ | 低❓ |
-| 創新高（N 日） | `Close >= Highest(High, N)` ❓ | 中 |
-| 本益比 PER | `// TODO: 確認 XQ 本益比欄位名（PER? PERatio?）` ❓ | 低❓ |
-| 股價淨值比 PBR | `// TODO: 確認 XQ 股價淨值比欄位名（PBR? PBRatio?）` ❓ | 低❓ |
-| 現金殖利率 | `// TODO: 確認 XQ 現金殖利率欄位名（YieldRatio? DividendYield?）` ❓ | 低❓ |
-| 月營收 YoY | `// TODO: 確認 XQ 月營收年增率欄位名` ❓ | 低❓ |
-| 法人買超 | `// TODO: 確認 XQ 法人買賣超欄位名（外資/投信）` ❓ | 低❓ |
-| VIX 指數 | `// TODO: VIX 為外部指數，確認 XScript 能否取值及代號` ❓ | 低❓ |
+| 移動平均 | `Average(Close, 20)`（**無** `MA()` 別名） | xshelp.xq.com.tw |
+| 黃金交叉 | `A crosses over B`（**關鍵字**，不是 `CrossOver(a,b)`） | xshelp / XScript_Preset |
+| 死亡交叉 | `A crosses under B` | xshelp / XScript_Preset |
+| N 期最高 | `Highest(High, N)`（**無** `HHV`） | xshelp.xq.com.tw |
+| N 期最低 | `Lowest(Low, N)` | xshelp.xq.com.tw |
+| 當前頻率 KD | `Stochastic(9, 3, 3, rsv, k, _d);` | xshelp.xq.com.tw |
+| 月線 KD（跨頻率） | `setbarfreq("M");` + `xf_stochastic("M", 9,3,3, rsv_M, kk_M, dd_M);` | xshelp.xq.com.tw |
+| 投信買賣超 | `GetField("投信買賣超", "D")` | XScript_Preset |
+| 法人合計買賣超 | `GetField("法人買賣超張數", "D")` | XScript_Preset |
+| 跨商品取值（如 VIX 數值） | `GetSymbolField("商品代碼", "收盤價", "D")` | xshelp.xq.com.tw |
+| 選股入選 | 條件成立 `Ret = 1;` | xshelp / XScript_Preset |
+| 附加欄位輸出 | `OutputField(1, 變數, 小數位, "欄位名")` | xshelp.xq.com.tw |
 
-**規則：信心「低❓」的條件，生成時一定要寫成 TODO 註解，不准直接給一個假函數名當定論。**
+月線 KD 完整骨架（官方寫法）：
+```xs
+setbarfreq("M");
+variable: rsv_M(0), kk_M(0), dd_M(0);
+xf_stochastic("M", 9, 3, 3, rsv_M, kk_M, dd_M);
+// kk_M = 月K，dd_M = 月D；月KD 低檔即 kk_M < 20
+```
+
+### ❓ 待確認（low / 查不到官方來源 → 一律保留 TODO，不可亂填）
+
+| 條件 | 狀態 | 該怎麼處理 |
+|---|---|---|
+| 本益比 PER 的 GetField 欄位字串 | 查不到官方（僅 2013 非官方舊文，low） | `// TODO: 在 XQ 選股編輯器輸入 GetField(" 看自動補全確認欄位名` |
+| 股價淨值比 PBR 的 GetField 欄位字串 | 查不到官方（同上，low） | 同上，保留 TODO |
+| 現金殖利率 的 GetField 欄位字串 | 查不到官方（同上，low） | 同上，保留 TODO |
+| 月營收 YoY 的 GetField 欄位字串 | 查不到官方 | 同上，保留 TODO |
+| VIX 精確商品代碼（如 VIX.FS） | 未經官方確認，low | 用 `GetSymbolField` 語法（✅），但代碼標 TODO，請在 XQ 商品搜尋確認 |
+
+**鐵則：上表 ❓ 的欄位字串，禁止把非官方舊文字串當正確寫進腳本，一律保留 TODO。**
 
 ---
 
@@ -93,7 +110,7 @@ description: >
 //==============================================================
 
 // 條件 1：<中文說明這段在做什麼>
-Condition1 = <XScript 寫法>;   // 若不確定 → 後面接 TODO 註解
+Condition1 = <XScript 寫法>;   // 若是 ❓ 欄位 → 後面接 TODO 註解
 
 // 條件 2：<中文說明>
 Condition2 = <XScript 寫法>;
@@ -101,15 +118,19 @@ Condition2 = <XScript 寫法>;
 // ... 更多條件 ...
 
 // 最終入選邏輯：全部條件都成立才入選
-// TODO: 確認 XQ 選股腳本「輸出入選」的正確語法（ret / Filter / outputfield）
-ret = Condition1 and Condition2 and ... ;
+// ✅ 官方語法：條件成立 Ret = 1;（不是 ret = 布林）
+if Condition1 and Condition2 and ... then Ret = 1;
+
+// （可選）輸出附加欄位方便檢視
+// ✅ 官方語法：OutputField(序號, 變數, 小數位, "欄位名")
+// OutputField(1, 某變數, 2, "欄位名");
 ```
 
 格式硬性要求：
 1. **每一段條件上方都要有繁體中文註解**，說明「這段在篩什麼」（呼應影片：「每一段都有中文的註解」）。
 2. **檔頭固定有 best-effort 警告 + 原始口語條件**。
-3. **不確定的函數一律 `// TODO: 確認 ...`**，不准無聲假裝。
-4. 最後輸出邏輯也標 TODO（因為「入選」語法 ret/Filter 我沒把握）。
+3. **❓ 待確認的欄位（PER/PBR/殖利率/月營收 YoY/VIX 代碼）一律 `// TODO: 確認 ...`**，不准無聲假裝；✅ 已驗證語法可直接用。
+4. **入選用官方 `Ret = 1;`**（已驗證，不再標 TODO）。
 
 ---
 

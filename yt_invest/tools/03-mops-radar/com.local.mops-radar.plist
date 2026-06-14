@@ -11,7 +11,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.johnny.mops-radar</string>
+    <string>com.local.mops-radar</string>
 
     <key>ProgramArguments</key>
     <array>

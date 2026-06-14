@@ -39,6 +39,9 @@
   .tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:11px;margin-left:4px}
   .tag.c{background:var(--cheap);color:#dfffe9}
   .tag.g{background:var(--grow);color:#dbeeff}
+  .tag.p{background:#6f1f1f;color:#ffdede}
+  td.pledge.hi{color:var(--red);font-weight:700}
+  td.pledge.mid{color:var(--gold)}
   .na{color:var(--muted)}
   .note{padding:14px 16px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);line-height:1.7}
   .note b{color:var(--gold)}
@@ -53,7 +56,7 @@
 <body>
 <header>
   <h1>AI 投資資訊站</h1>
-  <div class="sub">台股快速篩選 · 估值 + 月營收 + 自訂性價比指標 · 資料源 TWSE OpenAPI</div>
+  <div class="sub">台股快速篩選 · 估值 + 月營收 + 董監設質 + 自訂性價比指標 · 資料源 TWSE OpenAPI</div>
   <div class="updated" id="updated"></div>
 </header>
 
@@ -61,6 +64,7 @@
   <input type="search" id="q" placeholder="搜尋代號或名稱（例：2330 或 台積電）" autocomplete="off">
   <span class="chip" id="f-cheap">💰 只看便宜標的</span>
   <span class="chip" id="f-grow">📈 只看營收雙成長</span>
+  <span class="chip" id="f-pledge">⚠️ 只看高設質(&gt;30%)</span>
 </div>
 <div class="stats" id="stats"></div>
 
@@ -77,6 +81,7 @@
         <th data-k="value_score" title="殖利率/PB，越高越划算">性價比★</th>
         <th data-k="rev_mom_pct">營收MoM%</th>
         <th data-k="rev_yoy_pct">營收YoY%</th>
+        <th data-k="insider_pledge_ratio" title="董監/內部人設質股數 ÷ 持股，>30% 警示｜TWSE t187ap11_L">設質比例%</th>
       </tr>
     </thead>
     <tbody id="rows"></tbody>
@@ -84,16 +89,24 @@
 </div>
 
 <div class="note" id="note">
-  <b>誠實聲明（待接資料源）：</b>影片提到的「籌碼資料」——<b>董監事持股變化</b>與
-  <b>CB 可轉換公司債轉換</b>——TWSE OpenAPI 無公開端點，本站<b>不造假</b>，相關欄位一律標 N/A，
-  待日後另接公開或付費資料源。<br>
+  <b>籌碼資料狀態：</b>
+  <span style="color:var(--green)">✅ 董監/內部人持股 + 設質比例 — 已接 TWSE t187ap11_L（真實資料）</span>；
+  <b>CB 可轉換公司債轉換</b> — TWSE 無純公開端點（TWT53U 含 ETF 等一般證券），本站<b>不造假</b>，
+  該欄一律標 N/A，待日後另接公開或付費資料源。<br>
   指標定義：性價比★ = 殖利率% ÷ PB（越高越划算）；便宜標的 = PB&lt;1.5 且 殖利率≥5%；
-  營收雙成長 = MoM% 與 YoY% 皆 &gt;0。本站僅供研究參考，非投資建議。
+  營收雙成長 = MoM% 與 YoY% 皆 &gt;0；
+  設質比例% = 全公司內部人設質股數 ÷ 目前持股加總，<b>&gt;30% 標紅警示</b>（籌碼/質押風險）。
+  本站僅供研究參考，非投資建議。
 </div>
 
 <script>
 let DATA = [], sortKey = "value_score", sortDir = -1;
-const fCheap = {on:false}, fGrow = {on:false};
+const fCheap = {on:false}, fGrow = {on:false}, fPledge = {on:false};
+const pledgeCell = (v) => {
+  if(v===null||v===undefined) return ['<span class="na">N/A</span>',''];
+  const cls = v>30?'hi':v>=10?'mid':'';
+  return [`${Number(v).toFixed(2)}`, cls];
+};
 
 const num = (v, d=2) => v===null||v===undefined ? '<span class="na">N/A</span>'
   : Number(v).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:d});
@@ -108,6 +121,7 @@ function render(){
   let list = DATA.filter(r=>{
     if(fCheap.on && !r.is_cheap) return false;
     if(fGrow.on && !r.is_growing) return false;
+    if(fPledge.on && !r.is_high_pledge) return false;
     if(q){
       return (r.code||'').toLowerCase().includes(q) || (r.name||'').toLowerCase().includes(q);
     }
@@ -125,7 +139,9 @@ function render(){
   tb.innerHTML = list.map(r=>{
     const cls = (r.is_cheap?'cheap ':'') + (r.is_growing?'grow':'');
     const tags = (r.is_cheap?'<span class="tag c">便宜</span>':'')
-               + (r.is_growing?'<span class="tag g">成長</span>':'');
+               + (r.is_growing?'<span class="tag g">成長</span>':'')
+               + (r.is_high_pledge?'<span class="tag p">高設質</span>':'');
+    const [pTxt, pCls] = pledgeCell(r.insider_pledge_ratio);
     return `<tr class="${cls}">
       <td class="l"><span class="code">${r.code}</span></td>
       <td class="l">${r.name||''}${tags}</td>
@@ -136,6 +152,7 @@ function render(){
       <td>${num(r.value_score)}</td>
       <td class="mom">${signed(r.rev_mom_pct)}</td>
       <td class="yoy">${signed(r.rev_yoy_pct)}</td>
+      <td class="pledge ${pCls}">${pTxt}</td>
     </tr>`;
   }).join('');
 
@@ -155,9 +172,10 @@ function bind(){
     else {sortKey=k; sortDir = (k==='code'||k==='name'||k==='industry')?1:-1;}
     render();
   }));
-  const tc=document.getElementById('f-cheap'), tg=document.getElementById('f-grow');
+  const tc=document.getElementById('f-cheap'), tg=document.getElementById('f-grow'), tp=document.getElementById('f-pledge');
   tc.addEventListener('click',()=>{fCheap.on=!fCheap.on; tc.classList.toggle('on',fCheap.on); render();});
   tg.addEventListener('click',()=>{fGrow.on=!fGrow.on; tg.classList.toggle('on',fGrow.on); render();});
+  tp.addEventListener('click',()=>{fPledge.on=!fPledge.on; tp.classList.toggle('on',fPledge.on); render();});
 }
 
 fetch('./data.json')

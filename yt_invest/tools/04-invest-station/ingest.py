@@ -35,10 +35,12 @@ ENDPOINTS = {
     "basic": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
     "revenue": "https://openapi.twse.com.tw/v1/opendata/t187ap05_L",
     "value": "https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL",
+    # 董監事/內部人持股 + 設質：每位內部人一列，需依公司代號彙總
+    "insider": "https://openapi.twse.com.tw/v1/opendata/t187ap11_L",
 }
 
-# 影片提到但 TWSE OpenAPI 無公開端點的「籌碼」欄位 → 一律 N/A，不造假
-PENDING_FIELDS = ["director_holding_change", "cb_conversion"]
+# CB 可轉債：TWSE 無純公開端點（TWT53U 含 ETF 等一般證券，非乾淨 CB 源）→ 維持 N/A，不造假
+PENDING_FIELDS = ["cb_conversion"]
 
 
 # ---------------------------------------------------------------- 抓取 ----
@@ -66,7 +68,14 @@ def to_float(raw):
     """robust：空字串/None/逗號/全形空白/'-' → None；否則 float。"""
     if raw is None:
         return None
-    s = str(raw).strip().replace(",", "").replace("　", "")
+    s = (
+        str(raw)
+        .strip()
+        .replace(",", "")
+        .replace("　", "")
+        .replace("%", "")
+        .replace(" ", "")
+    )
     if s in ("", "-", "－", "N/A", "NA", "null"):
         return None
     try:
@@ -85,6 +94,39 @@ def pct(numer, denom):
     if numer is None or denom is None or denom == 0:
         return None
     return round((numer - denom) / abs(denom) * 100, 2)
+
+
+def aggregate_insiders(rows):
+    """
+    t187ap11_L 每位內部人一列 → 依公司代號彙總成每檔一列。
+    回傳 {code: {"total_shares": int|None, "pledge_ratio": float|None}}。
+      total_shares = 全公司內部人「目前持股」加總
+      pledge_ratio = 全公司「設質股數」加總 / 「目前持股」加總 ×100；分母 0/缺 → None
+    欄名注意全形空格（如 '選任時持股 '）；本表用到的鍵名無尾隨空白，仍以 get() robust 讀取。
+    """
+    agg = {}
+    for r in rows:
+        code = str(r.get("公司代號", "")).strip()
+        if not code:
+            continue
+        hold = to_int(r.get("目前持股"))
+        pledge = to_int(r.get("設質股數"))
+        a = agg.setdefault(code, {"hold_sum": 0, "pledge_sum": 0, "has_data": False})
+        if hold is not None:
+            a["hold_sum"] += hold
+            a["has_data"] = True
+        if pledge is not None:
+            a["pledge_sum"] += pledge
+
+    out = {}
+    for code, a in agg.items():
+        if not a["has_data"]:
+            out[code] = {"total_shares": None, "pledge_ratio": None}
+            continue
+        hs = a["hold_sum"]
+        ratio = round(a["pledge_sum"] / hs * 100, 2) if hs > 0 else None
+        out[code] = {"total_shares": hs, "pledge_ratio": ratio}
+    return out
 
 
 # ------------------------------------------------------------ 自訂指標 ----
@@ -136,13 +178,17 @@ def init_db(conn):
             rev_last_year   INTEGER,
             rev_mom_pct     REAL,
             rev_yoy_pct     REAL,
+            -- 董監/內部人持股 + 設質（t187ap11_L，依公司彙總）
+            insider_total_shares  INTEGER,
+            insider_pledge_ratio  REAL,
+            director_holding_change TEXT,  -- 狀態標記：已接 t187ap11_L（資料見 insider_* 欄）
+            -- CB 可轉債：無純公開端點 → 待接源（永遠 NULL，不造假）
+            cb_conversion           TEXT,
             -- 自訂指標
             value_score     REAL,
             is_cheap        INTEGER,
             is_growing      INTEGER,
-            -- 影片提到但無公開端點 → 待接源（永遠 NULL，不造假）
-            director_holding_change TEXT,
-            cb_conversion           TEXT,
+            is_high_pledge  INTEGER,
             updated_at      TEXT
         )
     """
@@ -177,6 +223,7 @@ def main():
 
     value_by_code = {str(r.get("Code", "")).strip(): r for r in raw["value"]}
     revenue_by_code = {str(r.get("公司代號", "")).strip(): r for r in raw["revenue"]}
+    insider_by_code = aggregate_insiders(raw["insider"])  # 27391 列 → 依公司彙總
 
     now = datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M:%S")
     rows = []
@@ -205,6 +252,14 @@ def main():
         cheap = cheap_flag(dy, pb)
         grow = growth_flag(mom, yoy)
 
+        ins = insider_by_code.get(code, {})
+        insider_total = ins.get("total_shares")
+        pledge_ratio = ins.get("pledge_ratio")
+        # 設質比例 >30% = 籌碼風險警示
+        high_pledge = pledge_ratio is not None and pledge_ratio > 30
+        # 董監持股狀態：有彙總到資料就標「已接」，否則該檔無內部人資料
+        dhc_status = "已接 t187ap11_L" if insider_total is not None else None
+
         name = (
             str(v.get("Name", "")).strip()
             or str(rv.get("公司名稱", "")).strip()
@@ -232,12 +287,16 @@ def main():
                 "rev_last_year": rev_ly,
                 "rev_mom_pct": mom,
                 "rev_yoy_pct": yoy,
+                # 董監/內部人持股 + 設質（已接 t187ap11_L）
+                "insider_total_shares": insider_total,
+                "insider_pledge_ratio": pledge_ratio,
+                "director_holding_change": dhc_status,
+                # CB 可轉債：無純公開端點 → 待接源，不造假
+                "cb_conversion": None,
                 "value_score": vs,
                 "is_cheap": 1 if cheap else 0,
                 "is_growing": 1 if grow else 0,
-                # 待接源：影片提的籌碼資料，無公開端點 → 不造假
-                "director_holding_change": None,
-                "cb_conversion": None,
+                "is_high_pledge": 1 if high_pledge else 0,
                 "updated_at": now,
             }
         )
@@ -267,16 +326,24 @@ def main():
     n_rev = sum(1 for r in rows if r["rev_current"] is not None)
     n_cheap = sum(r["is_cheap"] for r in rows)
     n_grow = sum(r["is_growing"] for r in rows)
+    n_insider = sum(1 for r in rows if r["insider_total_shares"] is not None)
+    n_pledge = sum(1 for r in rows if r["insider_pledge_ratio"] is not None)
+    n_high_pledge = sum(r["is_high_pledge"] for r in rows)
 
     print("-" * 60)
     print(f"基本資料抓取:   {len(basic_by_code)} 檔")
     print(f"有估值(PB)資料: {n_value} 檔")
     print(f"有月營收資料:   {n_rev} 檔")
+    print(f"董監/內部人持股: 原始 {len(raw['insider'])} 列 → 彙總 {n_insider} 檔有資料")
+    print(f"有設質比例資料: {n_pledge} 檔（高設質>30% 警示: {n_high_pledge} 檔）")
     print(f"便宜標的(低PB+高殖利率): {n_cheap} 檔")
     print(f"營收雙成長標的: {n_grow} 檔")
     print(f"寫入 SQLite:    {DB_PATH}  → {db_count} 列")
     print(f"寫入 data.json: {JSON_PATH}  → {len(rows)} 列")
-    print(f"待接源欄位(不造假): {', '.join(PENDING_FIELDS)} = N/A")
+    print(
+        f"董監持股: ✅ 已接 TWSE t187ap11_L（insider_total_shares / insider_pledge_ratio）"
+    )
+    print(f"待接源欄位(不造假): {', '.join(PENDING_FIELDS)} = N/A（CB 無純公開源）")
     print("完成。")
 
 

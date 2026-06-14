@@ -5,33 +5,42 @@
 // 來源條件（口語）：VIX > 40 + 月KD 低檔 + 股價淨值比偏低 + 現金殖利率 > 8%
 //==============================================================
 //
-// 【誠實標註】這支裡有 4 個欄位我「無法從記憶驗證」，全部標了 TODO：
-//   VIX 取值、月KD 取值、股價淨值比(PBR)、現金殖利率。
-//   請逐一在 XQ 編譯時對照實際函數名修正。
+// 【信心標註】
+//   ✅ high（官方語法）：月KD 用 setbarfreq+xf_stochastic、VIX 用 GetSymbolField、Ret=1 入選
+//   ❓ low / 查不到：VIX 精確商品代碼、PBR/現金殖利率 的 GetField 欄位字串 → 保留 TODO
+//   來源：xshelp.xq.com.tw、github.com/sysjust-xq/XScript_Preset
 //
 
 // 條件 1：市場極度恐慌 —— VIX 恐慌指數 > 40
-// ❓ VIX 是美股 CBOE 恐慌指數（外部指數），台股 XScript 能否直接取值我不確定
-// TODO: 確認 XQ 取 VIX 數值的寫法與代號（可能要用 GetSymbolField 或外部商品引用）
-Value1 = 0;  // <-- 用實際 VIX 取值替換，例：Value1 = Close of "VIX";
+// ✅ 跨商品取值語法為官方：GetSymbolField("商品代碼","收盤價","D")
+// ❓ TODO: VIX 精確商品代碼未經官方確認（可能 VIX.FS 之類），請在 XQ 商品搜尋確認後替換
+Value1 = GetSymbolField("VIX.FS", "收盤價", "D");  // <-- TODO: 商品代碼待 XQ 確認
 Condition1 = Value1 > 40;
 
-// 條件 2：月KD 在低檔（月線週期的 K 值偏低，例如 < 20）
-// TODO: 確認 XQ「月週期 KD」的取值寫法；跨週期取值各版本差異大
-// 一般 KD 寫法可能是：Value2 = KD(9, 3, 3); 取 K 值；月週期需另外指定 period
-Value2 = 0;  // <-- 用實際月KD的K值替換
-Condition2 = Value2 < 20;
+// 條件 2：月KD 在低檔（月線週期 K 值偏低，例如 < 20）
+// ✅ 跨頻率 KD 官方寫法：setbarfreq 切月頻 + xf_stochastic
+setbarfreq("M");
+variable: rsv_M(0), kk_M(0), dd_M(0);
+xf_stochastic("M", 9, 3, 3, rsv_M, kk_M, dd_M);
+// kk_M = 月K，dd_M = 月D
+Condition2 = kk_M < 20;
 
 // 條件 3：股價淨值比（PBR）偏低，例如 < 1
-// TODO: 確認 XQ 股價淨值比欄位名（PBR? PBRatio? 股價淨值比?）
-Value3 = 999;  // <-- 用實際 PBR 欄位替換
+// ❓ TODO: PBR 的 GetField 欄位字串查不到官方來源（僅 2013 非官方舊文，信心 low）。
+//   請在 XQ 選股編輯器輸入 GetField(" 看自動補全清單確認正確欄位名，不要亂填。
+Value3 = 999;  // <-- TODO: 用 GetField("<確認欄位名>","D") 替換
 Condition3 = Value3 < 1;
 
 // 條件 4：現金殖利率 > 8%
-// TODO: 確認 XQ 現金殖利率欄位名（YieldRatio? DividendYield? 現金殖利率?）
-Value4 = 0;  // <-- 用實際殖利率欄位替換（注意單位是 % 還是小數）
+// ❓ TODO: 現金殖利率的 GetField 欄位字串查不到官方來源（信心 low）。
+//   請在 XQ 選股編輯器輸入 GetField(" 看自動補全清單確認正確欄位名，不要亂填。
+Value4 = 0;  // <-- TODO: 用 GetField("<確認欄位名>","D") 替換（注意單位 % 或小數）
 Condition4 = Value4 > 8;
 
 // 最終入選：4 個條件全部成立
-// TODO: 確認 XQ 選股腳本「輸出入選」正確語法（ret / Filter / outputfield1）
-ret = Condition1 and Condition2 and Condition3 and Condition4;
+// ✅ 選股回傳官方語法：條件成立 Ret = 1;
+if Condition1 and Condition2 and Condition3 and Condition4 then Ret = 1;
+
+// （可選）把關鍵數值輸出成附加欄位，方便在選股結果表檢視
+// ✅ 官方語法：OutputField(序號, 變數, 小數位, "欄位名")
+OutputField(1, kk_M, 2, "月K");

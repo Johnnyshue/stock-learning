@@ -5,20 +5,24 @@
 // 來源條件（口語）：站上季線（60日均線）且 月營收 YoY 由負轉正
 //==============================================================
 //
-// 【誠實標註】「站上季線」相對有把握；「月營收 YoY」欄位名我沒驗證，已標 TODO。
+// 【信心標註】
+//   ✅ high（官方語法）：Average(Close,60) 站季線、Ret=1 入選
+//   ❓ low / 查不到：月營收 YoY 的 GetField 欄位字串 → 保留 TODO
+//   來源：xshelp.xq.com.tw、github.com/sysjust-xq/XScript_Preset
 //
 
 // 條件 1：站上季線 —— 收盤價 > 60 日均線
-// 均線函數可能是 Average(Close, N) 或 MA(Close, N)
+// ✅ 官方：Average(Close, N)，無 MA() 別名
 Condition1 = Close > Average(Close, 60);
 
 // 條件 2：月營收年增率（YoY）轉正 —— 最新月 YoY > 0 且上個月 <= 0
-// TODO: 確認 XQ 月營收年增率欄位名（MonthlyRevenueYoY? 月營收年增?）
-// TODO: 確認取「上一期」月營收的寫法（[1] 索引是否適用基本面欄位）
-Value1 = 0;   // <-- 用實際「本月營收YoY」欄位替換
-Value2 = 0;   // <-- 用實際「上月營收YoY」欄位替換
+// ❓ TODO: 月營收 YoY 的 GetField 欄位字串查不到官方來源（信心 low）。
+//   請在 XQ 選股編輯器輸入 GetField(" 看自動補全清單確認正確欄位名，不要亂填。
+//   取「上一期」可用 [1] 索引，但基本面欄位是否適用請於編譯時確認。
+Value1 = 0;   // <-- TODO: 用 GetField("<確認欄位名>","M") 替換（本月營收YoY）
+Value2 = 0;   // <-- TODO: 同上欄位取 [1]（上月營收YoY）
 Condition2 = (Value1 > 0) and (Value2 <= 0);
 
 // 最終入選：技術 + 基本面同時成立
-// TODO: 確認 XQ 選股輸出語法（ret / Filter）
-ret = Condition1 and Condition2;
+// ✅ 選股回傳官方語法：條件成立 Ret = 1;
+if Condition1 and Condition2 then Ret = 1;

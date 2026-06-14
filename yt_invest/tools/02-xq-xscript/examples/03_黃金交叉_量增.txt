@@ -5,22 +5,21 @@
 // 來源條件（口語）：5 日均線上穿 20 日均線（黃金交叉）且 今日量 > 20 日均量 ×1.5
 //==============================================================
 //
-// 【誠實標註】CrossOver 函數名是 best-effort，多數類 EasyLanguage 平台有，
-//   但 XQ 確切名稱請以編譯為準（也可能是 Cross / GoldenCross）。
+// 【信心標註】
+//   ✅ high（官方語法）：crosses over 關鍵字、Average()、Ret=1 入選
+//   來源：xshelp.xq.com.tw、github.com/sysjust-xq/XScript_Preset
 //
 
 // 條件 1：黃金交叉 —— 5MA 由下往上穿越 20MA
-// ❓ TODO: 確認 XQ 上穿函數名（CrossOver? Cross? 或自己寫前後比較）
-// 保險寫法（不靠 CrossOver，純比較前後一根）：
-//   今日 5MA > 20MA 且 昨日 5MA <= 20MA
+// ✅ 官方為「關鍵字」語法：A crosses over B（上穿）/ A crosses under B（下穿），
+//    不是 CrossOver(a,b) 函數。
 Value1 = Average(Close, 5);
 Value2 = Average(Close, 20);
-Condition1 = (Value1 > Value2) and (Value1[1] <= Value2[1]);
-// 註：[1] 代表前一根 K 棒；若 XQ 索引語法不同請調整。
+Condition1 = Value1 crosses over Value2;
 
 // 條件 2：量增 —— 今日成交量 > 20 日均量的 1.5 倍
 Condition2 = Volume > Average(Volume, 20) * 1.5;
 
 // 最終入選：交叉 + 放量同時成立
-// TODO: 確認 XQ 選股輸出語法（ret / Filter）
-ret = Condition1 and Condition2;
+// ✅ 選股回傳官方語法：條件成立 Ret = 1;
+if Condition1 and Condition2 then Ret = 1;

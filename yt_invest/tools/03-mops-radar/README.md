@@ -66,7 +66,7 @@ TOP_N              = 20     # 終端機表格預設顯示筆數
 
 ## 每天早上自動跑（macOS launchd）
 
-範本：`com.johnny.mops-radar.plist`（每天 08:00 觸發）。
+範本：`com.local.mops-radar.plist`（每天 08:00 觸發）。
 
 1. 先查路徑：
    ```bash
@@ -82,23 +82,23 @@ TOP_N              = 20     # 終端機表格預設顯示筆數
        -e "s|__RADAR_DIR__|$RADAR_DIR|g" \
        -e "s|__YOUR_BOT_TOKEN__|你的token|" \
        -e "s|__YOUR_CHAT_ID__|你的chatid|" \
-       "$RADAR_DIR/com.johnny.mops-radar.plist" \
-       > ~/Library/LaunchAgents/com.johnny.mops-radar.plist
+       "$RADAR_DIR/com.local.mops-radar.plist" \
+       > ~/Library/LaunchAgents/com.local.mops-radar.plist
    ```
    （不想推 Telegram？把 token/chatid 兩處留原樣即可，會自動 dry-run，結果仍寫進 JSON 與 log。）
 3. 載入並啟用：
    ```bash
-   launchctl unload ~/Library/LaunchAgents/com.johnny.mops-radar.plist 2>/dev/null
-   launchctl load   ~/Library/LaunchAgents/com.johnny.mops-radar.plist
+   launchctl unload ~/Library/LaunchAgents/com.local.mops-radar.plist 2>/dev/null
+   launchctl load   ~/Library/LaunchAgents/com.local.mops-radar.plist
    ```
 4. 立即測一次（不等到早上）：
    ```bash
-   launchctl start com.johnny.mops-radar
+   launchctl start com.local.mops-radar
    cat ~/claude_projects/股票/yt_invest/tools/03-mops-radar/launchd.out.log
    ```
 5. 之後想停：
    ```bash
-   launchctl unload ~/Library/LaunchAgents/com.johnny.mops-radar.plist
+   launchctl unload ~/Library/LaunchAgents/com.local.mops-radar.plist
    ```
 
 > 註：`StartCalendarInterval` 若到點時電腦在睡眠，launchd 會在喚醒後補跑一次。
@@ -122,6 +122,6 @@ TOP_N              = 20     # 終端機表格預設顯示筆數
 ## 檔案
 
 - `radar.py` —— 主程式（抓資料 / 算指標 / 篩選 / 表格 / JSON / Telegram）
-- `com.johnny.mops-radar.plist` —— launchd 排程範本
+- `com.local.mops-radar.plist` —— launchd 排程範本
 - `output/radar_YYYYMMDD.json` —— 每次執行的結果
 - `README.md` —— 本說明

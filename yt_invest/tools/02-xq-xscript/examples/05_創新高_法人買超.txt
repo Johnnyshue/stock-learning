@@ -5,23 +5,24 @@
 // 來源條件（口語）：股價創 60 日新高 且 外資或投信當日買超
 //==============================================================
 //
-// 【誠實標註】「創新高」用 Highest 是 best-effort；「法人買賣超」欄位名我沒驗證，
-//   已標 TODO（外資/投信買賣超的內建變數名各版本可能不同）。
+// 【信心標註】
+//   ✅ high（官方語法）：Highest()、GetField("投信買賣超","D")、
+//      GetField("法人買賣超張數","D")、Ret=1 入選
+//   來源：xshelp.xq.com.tw、github.com/sysjust-xq/XScript_Preset
 //
 
 // 條件 1：創 60 日新高 —— 今日收盤 >= 過去 60 日最高價
-// ❓ TODO: 確認 XQ 取區間最高的函數名（Highest? HHV?）
-//   用 [1] 排除「今天自己」造成的恆真，視需要調整。
+// ✅ 官方：Highest(High, N) 取 N 期最高（無 HHV 別名）
 Value1 = Highest(High, 60);
 Condition1 = Close >= Value1;
 
-// 條件 2：法人買超 —— 外資 或 投信 當日買超（買賣超 > 0）
-// TODO: 確認 XQ 外資買賣超欄位名（ForeignNetBuy? 外資買賣超?）
-// TODO: 確認 XQ 投信買賣超欄位名（InvestmentTrustNetBuy? 投信買賣超?）
-Value2 = 0;  // <-- 用實際「外資買賣超」欄位替換
-Value3 = 0;  // <-- 用實際「投信買賣超」欄位替換
+// 條件 2：法人買超 —— 投信買超 或 法人合計買超（買賣超 > 0）
+// ✅ 投信買賣超官方欄位：GetField("投信買賣超", "D")
+// ✅ 法人合計官方欄位：  GetField("法人買賣超張數", "D")
+Value2 = GetField("投信買賣超", "D");
+Value3 = GetField("法人買賣超張數", "D");
 Condition2 = (Value2 > 0) or (Value3 > 0);
 
 // 最終入選：價格突破 + 法人同步進場
-// TODO: 確認 XQ 選股輸出語法（ret / Filter）
-ret = Condition1 and Condition2;
+// ✅ 選股回傳官方語法：條件成立 Ret = 1;
+if Condition1 and Condition2 then Ret = 1;

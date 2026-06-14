@@ -35,7 +35,8 @@ python3 -m http.server 8000
 - 搜尋：依代號或名稱即時過濾
 - 排序：點任一欄位標題排序（再點一次反向；N/A 一律殿後）
 - 高亮：便宜標的（左側綠條 + 「便宜」標籤）、營收雙成長（綠字 + 「成長」標籤）
-- 快速篩選 chip：只看便宜標的 / 只看營收雙成長
+- 快速篩選 chip：只看便宜標的 / 只看營收雙成長 / 只看高設質(>30%)
+- 設質比例%欄：>30% 標紅警示、10–30% 標黃（董監質押風險）
 - 繁中介面、手機友善 RWD
 
 ---
@@ -46,8 +47,9 @@ python3 -m http.server 8000
 | 公司基本資料（代號/簡稱/產業/住址/董事長） | `https://openapi.twse.com.tw/v1/opendata/t187ap03_L` |
 | 上市月營收（當月/上月/去年同月） | `https://openapi.twse.com.tw/v1/opendata/t187ap05_L` |
 | 本益比/殖利率/PB | `https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL` |
+| 董監/內部人持股 + 設質 | `https://openapi.twse.com.tw/v1/opendata/t187ap11_L` |
 
-數字皆做 robust 清洗（空字串、逗號、全形空白、`-`/`－` → 視為缺值 None，不當 0）。
+數字皆做 robust 清洗（空字串、逗號、全形/半形空格、`%` 號、`-`/`－` → 視為缺值 None，不當 0）。
 
 ---
 
@@ -59,20 +61,35 @@ python3 -m http.server 8000
 | `rev_yoy_pct` 月營收 YoY% | (當月−去年同月)/去年同月×100，自算；缺資料才退回官方欄位 |
 | `is_cheap` 便宜標記 | PB < 1.5 且 殖利率 ≥ 5% |
 | `is_growing` 營收成長標記 | MoM% 與 YoY% 皆 > 0 |
+| `is_high_pledge` 高設質警示 | 設質比例 > 30%（籌碼/質押風險） |
+
+---
+
+## 籌碼資料（董監持股 / 設質）— ✅ 已接 TWSE
+資料源（已驗證 HTTP 200，27391 筆）：
+`https://openapi.twse.com.tw/v1/opendata/t187ap11_L`（每位內部人一列，**依公司代號彙總**成每檔一列）
+
+| 欄位 | 定義 |
+|---|---|
+| `insider_total_shares` | 該公司所有內部人「目前持股」加總 |
+| `insider_pledge_ratio` | 全公司設質股數加總 ÷ 目前持股加總 ×100（%）；分母 0 → None |
+| `director_holding_change` | 狀態標記 `已接 t187ap11_L`（資料見上面兩欄） |
+
+> 對應影片講的「董監持股變化 / 質押異常」訊號。欄名含全形空格（如 `選任時持股 `），
+> 數字字串做 robust 清洗（全形/半形空格、逗號、`%` 號、空值 → None）。
+> Dashboard 設質比例 >30% 標紅警示，10–30% 標黃。
 
 ---
 
 ## ⚠️ 待接資料源（誠實聲明，不造假）
-影片提到的「籌碼資料」目前 **TWSE OpenAPI 無公開端點**，本工具**不抓、也不造假**，
-DB / JSON / UI 一律標 `N/A`，待日後另接公開或付費資料源：
+影片提到的「CB 可轉債」目前 **TWSE 無純公開端點**（TWT53U 回傳含 ETF 等一般證券，非乾淨 CB 源），
+本工具**不抓、也不造假**，該欄一律標 `N/A`，待日後另接公開或付費資料源：
 
 | 欄位 | 內容 | 狀態 |
 |---|---|---|
-| `director_holding_change` | 董監事持股變化 | 待接源（需另找公開 API 或付費源） |
 | `cb_conversion` | CB 可轉換公司債轉換 | 待接源（需另找公開 API 或付費源） |
 
-> 可能來源方向（未實作）：公開資訊觀測站（MOPS）內部人持股異動、可轉債相關公告，
-> 多為 HTML 報表或需另行解析，非本工具當前 OpenAPI 範圍。
+> 可能來源方向（未實作）：可轉債相關公告多為 HTML 報表或需另行解析，非本工具當前 OpenAPI 範圍。
 
 ---
 
@@ -87,6 +104,7 @@ README.md     本檔
 
 ## DB schema（stocks 表）
 主鍵 `code`。欄位含基本資料、估值（pe/dividend_yield/pb）、月營收（rev_*）、
-自訂指標（value_score/is_cheap/is_growing），及兩個永遠為 NULL 的待接源欄位。
+董監/內部人持股與設質（insider_total_shares / insider_pledge_ratio / director_holding_change）、
+自訂指標（value_score/is_cheap/is_growing/is_high_pledge），及永遠為 NULL 的 CB 待接源欄位 `cb_conversion`。
 
 > 僅供研究參考，非投資建議。
