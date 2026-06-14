@@ -156,6 +156,11 @@
       "title": "Ch26 全球宏觀指標解讀（GDP/CPI/PMI/利率/失業率）"
     },
     {
+      "order": "27",
+      "file": "ch27_quant_path.md",
+      "title": "Ch27 從散戶到「自己的量化團隊」——AI 實作養成路徑（蓋工具×投資好×懂選擇權）"
+    },
+    {
       "order": "99",
       "file": "ch_appendix.md",
       "title": "附錄 推薦學習資源"

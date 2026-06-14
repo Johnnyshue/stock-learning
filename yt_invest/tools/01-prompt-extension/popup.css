@@ -1,0 +1,369 @@
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
+    "Microsoft JhengHei", sans-serif;
+  font-size: 13px;
+  background: #f5f7fa;
+  color: #1a1a2e;
+  width: 480px;
+  min-height: 540px;
+  max-height: 620px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ===== Header ===== */
+header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+
+header h1 {
+  color: #e2b04a;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Toolbar ===== */
+.toolbar {
+  background: #fff;
+  padding: 10px 12px 0;
+  border-bottom: 1px solid #e8eaf0;
+  flex-shrink: 0;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1.5px solid #dde1ea;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 8px;
+  background: #f9fafb;
+}
+
+#searchInput:focus {
+  border-color: #e2b04a;
+  background: #fff;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 0;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #e2b04a;
+}
+
+.tab.active {
+  color: #e2b04a;
+  border-bottom-color: #e2b04a;
+  font-weight: 600;
+}
+
+/* ===== Template List ===== */
+.template-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #dde1ea transparent;
+}
+
+.template-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.template-list::-webkit-scrollbar-thumb {
+  background: #dde1ea;
+  border-radius: 2px;
+}
+
+/* ===== Template Card ===== */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  border: 1.5px solid #e8eaf0;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: #e2b04a;
+  box-shadow: 0 2px 8px rgba(226, 176, 74, 0.12);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a2e;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.card-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.badge-事件選股  { background: #fff3cd; color: #856404; }
+.badge-財報分析  { background: #d1fae5; color: #065f46; }
+.badge-產業研究  { background: #dbeafe; color: #1e40af; }
+.badge-風險評估  { background: #ffe4e6; color: #9f1239; }
+.badge-自訂      { background: #f3e8ff; color: #6b21a8; }
+
+.card-content {
+  font-size: 12px;
+  color: #4b5563;
+  line-height: 1.5;
+  max-height: 56px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.placeholder-hint {
+  font-size: 11px;
+  color: #e2b04a;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.btn-copy {
+  flex: 1;
+  padding: 6px 0;
+  background: #e2b04a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-copy:hover {
+  background: #c99a3b;
+}
+
+.btn-delete {
+  padding: 6px 10px;
+  background: #fff;
+  color: #9f1239;
+  border: 1.5px solid #fda4af;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: #ffe4e6;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  color: #9ca3af;
+  padding: 40px 0;
+  font-size: 13px;
+}
+
+.empty-state svg {
+  display: block;
+  margin: 0 auto 10px;
+  opacity: 0.35;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: #fff;
+  border-top: 1px solid #e8eaf0;
+  padding: 10px 12px;
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.btn {
+  padding: 7px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #1a1a2e;
+  color: #e2b04a;
+}
+
+.btn-primary:hover {
+  background: #16213e;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1.5px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 18px;
+  width: 420px;
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.modal h2 {
+  font-size: 15px;
+  color: #1a1a2e;
+  font-weight: 700;
+}
+
+.modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.modal input[type="text"],
+.modal select,
+.modal textarea {
+  margin-top: 2px;
+  padding: 7px 10px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 7px;
+  font-size: 13px;
+  color: #1a1a2e;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+
+.modal input[type="text"]:focus,
+.modal select:focus,
+.modal textarea:focus {
+  border-color: #e2b04a;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #e2b04a;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 200;
+  opacity: 1;
+  transition: opacity 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 投資 Prompt 模板庫</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- 頂部標題列 -->
+    <header>
+      <h1>AI 投資 Prompt 模板庫</h1>
+    </header>
+
+    <!-- 搜尋與分類篩選 -->
+    <div class="toolbar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="搜尋模板…"
+        autocomplete="off"
+      />
+      <div class="category-tabs" id="categoryTabs">
+        <button class="tab active" data-cat="all">全部</button>
+        <button class="tab" data-cat="事件選股">事件選股</button>
+        <button class="tab" data-cat="財報分析">財報分析</button>
+        <button class="tab" data-cat="產業研究">產業研究</button>
+        <button class="tab" data-cat="風險評估">風險評估</button>
+        <button class="tab" data-cat="自訂">自訂</button>
+      </div>
+    </div>
+
+    <!-- 模板列表 -->
+    <div id="templateList" class="template-list"></div>
+
+    <!-- 底部工具列 -->
+    <footer>
+      <button id="btnAddTemplate" class="btn btn-primary">＋ 新增模板</button>
+      <button id="btnExport" class="btn btn-secondary">匯出 JSON</button>
+      <button id="btnImportTrigger" class="btn btn-secondary">匯入 JSON</button>
+      <input type="file" id="importFileInput" accept=".json" style="display:none" />
+    </footer>
+
+    <!-- 新增模板 Modal -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+      <div class="modal">
+        <h2 id="modalTitle">新增模板</h2>
+        <label>標題
+          <input type="text" id="formTitle" placeholder="模板名稱" />
+        </label>
+        <label>分類
+          <select id="formCategory">
+            <option value="事件選股">事件選股</option>
+            <option value="財報分析">財報分析</option>
+            <option value="產業研究">產業研究</option>
+            <option value="風險評估">風險評估</option>
+            <option value="自訂">自訂</option>
+          </select>
+        </label>
+        <label>內容（用【佔位符】標記可替換欄位）
+          <textarea id="formContent" rows="6" placeholder="在此輸入 Prompt 內容，用【佔位符】標記可替換欄位…"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button id="btnSaveTemplate" class="btn btn-primary">儲存</button>
+          <button id="btnCancelModal" class="btn btn-secondary">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast 通知 -->
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
