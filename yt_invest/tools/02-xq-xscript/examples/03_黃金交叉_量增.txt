@@ -1,0 +1,26 @@
+//==============================================================
+// ⚠️ best-effort 範本：請在 XQ 編輯器按【編譯】驗證，
+//    函數名可能需依實際 XScript 版本調整。未編譯通過前不保證可跑。
+// 策略名稱：均線黃金交叉 + 量能放大
+// 來源條件（口語）：5 日均線上穿 20 日均線（黃金交叉）且 今日量 > 20 日均量 ×1.5
+//==============================================================
+//
+// 【誠實標註】CrossOver 函數名是 best-effort，多數類 EasyLanguage 平台有，
+//   但 XQ 確切名稱請以編譯為準（也可能是 Cross / GoldenCross）。
+//
+
+// 條件 1：黃金交叉 —— 5MA 由下往上穿越 20MA
+// ❓ TODO: 確認 XQ 上穿函數名（CrossOver? Cross? 或自己寫前後比較）
+// 保險寫法（不靠 CrossOver，純比較前後一根）：
+//   今日 5MA > 20MA 且 昨日 5MA <= 20MA
+Value1 = Average(Close, 5);
+Value2 = Average(Close, 20);
+Condition1 = (Value1 > Value2) and (Value1[1] <= Value2[1]);
+// 註：[1] 代表前一根 K 棒；若 XQ 索引語法不同請調整。
+
+// 條件 2：量增 —— 今日成交量 > 20 日均量的 1.5 倍
+Condition2 = Volume > Average(Volume, 20) * 1.5;
+
+// 最終入選：交叉 + 放量同時成立
+// TODO: 確認 XQ 選股輸出語法（ret / Filter）
+ret = Condition1 and Condition2;

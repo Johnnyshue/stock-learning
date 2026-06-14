@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  飆股雷達 launchd 範本 —— 每天早上 08:00 自動跑（「我睡覺，AI 工作」）。
+
+  安裝步驟見 README.md。請先把下方三處 __PLACEHOLDER__ 換成你的實際值：
+    1. PythonExecutable  : `which python3` 的結果
+    2. RadarScriptPath   : radar.py 的絕對路徑
+    3. TELEGRAM_*        : 你的 bot token / chat id（要真的推送才需填；不填則自動 dry-run）
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.johnny.mops-radar</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>__PYTHON3_PATH__</string>
+        <string>__RADAR_PY_PATH__</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>TELEGRAM_BOT_TOKEN</key>
+        <string>__YOUR_BOT_TOKEN__</string>
+        <key>TELEGRAM_CHAT_ID</key>
+        <string>__YOUR_CHAT_ID__</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>__RADAR_DIR__/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__RADAR_DIR__/launchd.err.log</string>
+</dict>
+</plist>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 投資資訊站 — 台股快速篩選</title>
+<style>
+  :root{
+    --bg:#0f1419; --card:#1a212b; --line:#2a3441; --txt:#e6edf3; --muted:#8b98a5;
+    --green:#3fb950; --red:#f85149; --gold:#d29922; --blue:#58a6ff; --cheap:#1f6f3f; --grow:#1f4f6f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+    background:var(--bg);color:var(--txt);font-size:15px;line-height:1.5}
+  header{padding:16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:10}
+  h1{margin:0 0 4px;font-size:20px}
+  .sub{color:var(--muted);font-size:13px}
+  .updated{color:var(--muted);font-size:12px;margin-top:4px}
+  .controls{padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+    border-bottom:1px solid var(--line);position:sticky;top:73px;background:var(--bg);z-index:9}
+  input[type=search]{flex:1;min-width:180px;padding:9px 12px;border-radius:8px;border:1px solid var(--line);
+    background:var(--card);color:var(--txt);font-size:15px}
+  .chip{padding:7px 12px;border-radius:20px;border:1px solid var(--line);background:var(--card);
+    color:var(--txt);cursor:pointer;font-size:13px;user-select:none}
+  .chip.on{background:var(--blue);color:#001;border-color:var(--blue);font-weight:600}
+  .stats{padding:8px 16px;color:var(--muted);font-size:13px}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;min-width:760px}
+  th,td{padding:9px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+  th{position:sticky;top:0;background:var(--card);cursor:pointer;user-select:none;font-size:13px;color:var(--muted)}
+  th:hover{color:var(--txt)}
+  th.asc::after{content:" ▲"} th.desc::after{content:" ▼"}
+  td.l,th.l{text-align:left}
+  tbody tr:hover{background:#202833}
+  tr.cheap{box-shadow:inset 3px 0 0 var(--green)}
+  tr.grow td.mom,tr.grow td.yoy{color:var(--green)}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+  .code{color:var(--blue);font-weight:600}
+  .tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:11px;margin-left:4px}
+  .tag.c{background:var(--cheap);color:#dfffe9}
+  .tag.g{background:var(--grow);color:#dbeeff}
+  .na{color:var(--muted)}
+  .note{padding:14px 16px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);line-height:1.7}
+  .note b{color:var(--gold)}
+  .err{padding:24px 16px;color:var(--red)}
+  @media(max-width:600px){
+    header{padding:12px} h1{font-size:17px}
+    th,td{padding:7px 8px;font-size:13px}
+    .controls{top:64px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>AI 投資資訊站</h1>
+  <div class="sub">台股快速篩選 · 估值 + 月營收 + 自訂性價比指標 · 資料源 TWSE OpenAPI</div>
+  <div class="updated" id="updated"></div>
+</header>
+
+<div class="controls">
+  <input type="search" id="q" placeholder="搜尋代號或名稱（例：2330 或 台積電）" autocomplete="off">
+  <span class="chip" id="f-cheap">💰 只看便宜標的</span>
+  <span class="chip" id="f-grow">📈 只看營收雙成長</span>
+</div>
+<div class="stats" id="stats"></div>
+
+<div class="tbl-wrap">
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th class="l" data-k="code">代號</th>
+        <th class="l" data-k="name">名稱</th>
+        <th class="l" data-k="industry">產業</th>
+        <th data-k="pe_ratio">本益比</th>
+        <th data-k="dividend_yield">殖利率%</th>
+        <th data-k="pb_ratio">PB</th>
+        <th data-k="value_score" title="殖利率/PB，越高越划算">性價比★</th>
+        <th data-k="rev_mom_pct">營收MoM%</th>
+        <th data-k="rev_yoy_pct">營收YoY%</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<div class="note" id="note">
+  <b>誠實聲明（待接資料源）：</b>影片提到的「籌碼資料」——<b>董監事持股變化</b>與
+  <b>CB 可轉換公司債轉換</b>——TWSE OpenAPI 無公開端點，本站<b>不造假</b>，相關欄位一律標 N/A，
+  待日後另接公開或付費資料源。<br>
+  指標定義：性價比★ = 殖利率% ÷ PB（越高越划算）；便宜標的 = PB&lt;1.5 且 殖利率≥5%；
+  營收雙成長 = MoM% 與 YoY% 皆 &gt;0。本站僅供研究參考，非投資建議。
+</div>
+
+<script>
+let DATA = [], sortKey = "value_score", sortDir = -1;
+const fCheap = {on:false}, fGrow = {on:false};
+
+const num = (v, d=2) => v===null||v===undefined ? '<span class="na">N/A</span>'
+  : Number(v).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:d});
+const signed = (v) => {
+  if(v===null||v===undefined) return '<span class="na">N/A</span>';
+  const cls = v>0?'pos':v<0?'neg':'';
+  return `<span class="${cls}">${v>0?'+':''}${Number(v).toFixed(2)}</span>`;
+};
+
+function render(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  let list = DATA.filter(r=>{
+    if(fCheap.on && !r.is_cheap) return false;
+    if(fGrow.on && !r.is_growing) return false;
+    if(q){
+      return (r.code||'').toLowerCase().includes(q) || (r.name||'').toLowerCase().includes(q);
+    }
+    return true;
+  });
+  list.sort((a,b)=>{
+    let x=a[sortKey], y=b[sortKey];
+    const xn=x===null||x===undefined, yn=y===null||y===undefined;
+    if(xn&&yn) return 0; if(xn) return 1; if(yn) return -1; // N/A 永遠殿後
+    if(typeof x==='string') return sortDir*x.localeCompare(y,'zh-Hant');
+    return sortDir*(x-y);
+  });
+
+  const tb = document.getElementById('rows');
+  tb.innerHTML = list.map(r=>{
+    const cls = (r.is_cheap?'cheap ':'') + (r.is_growing?'grow':'');
+    const tags = (r.is_cheap?'<span class="tag c">便宜</span>':'')
+               + (r.is_growing?'<span class="tag g">成長</span>':'');
+    return `<tr class="${cls}">
+      <td class="l"><span class="code">${r.code}</span></td>
+      <td class="l">${r.name||''}${tags}</td>
+      <td class="l">${r.industry||'<span class=na>—</span>'}</td>
+      <td>${num(r.pe_ratio)}</td>
+      <td>${num(r.dividend_yield)}</td>
+      <td>${num(r.pb_ratio)}</td>
+      <td>${num(r.value_score)}</td>
+      <td class="mom">${signed(r.rev_mom_pct)}</td>
+      <td class="yoy">${signed(r.rev_yoy_pct)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('stats').textContent =
+    `顯示 ${list.length} / 共 ${DATA.length} 檔`;
+  document.querySelectorAll('th').forEach(th=>{
+    th.classList.remove('asc','desc');
+    if(th.dataset.k===sortKey) th.classList.add(sortDir>0?'asc':'desc');
+  });
+}
+
+function bind(){
+  document.getElementById('q').addEventListener('input', render);
+  document.querySelectorAll('th').forEach(th=>th.addEventListener('click',()=>{
+    const k=th.dataset.k;
+    if(sortKey===k) sortDir=-sortDir;
+    else {sortKey=k; sortDir = (k==='code'||k==='name'||k==='industry')?1:-1;}
+    render();
+  }));
+  const tc=document.getElementById('f-cheap'), tg=document.getElementById('f-grow');
+  tc.addEventListener('click',()=>{fCheap.on=!fCheap.on; tc.classList.toggle('on',fCheap.on); render();});
+  tg.addEventListener('click',()=>{fGrow.on=!fGrow.on; tg.classList.toggle('on',fGrow.on); render();});
+}
+
+fetch('./data.json')
+  .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+  .then(d=>{
+    DATA=d;
+    const upd = d.length && d[0].updated_at ? d[0].updated_at : '';
+    document.getElementById('updated').textContent =
+      `資料更新：${upd}　·　${d.length} 檔上市公司`;
+    bind(); render();
+  })
+  .catch(e=>{
+    document.querySelector('.tbl-wrap').innerHTML =
+      `<div class="err">無法載入 data.json：${e.message}<br>
+       請先執行 <code>python3 ingest.py</code> 產生資料，
+       並用 <code>python3 -m http.server</code> 開啟本頁（直接雙擊 file:// 可能被瀏覽器 CORS 擋）。</div>`;
+  });
+</script>
+</body>
+</html>
