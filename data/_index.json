@@ -2,78 +2,78 @@
   "0050.TW": {
     "name": "元大台灣50",
     "file": "0050_TW.json",
-    "bars": 484,
-    "last_close": 90.55,
-    "last_date": "2026-04-29"
+    "bars": 485,
+    "last_close": 107.2,
+    "last_date": "2026-06-25"
   },
   "2330.TW": {
     "name": "台積電",
     "file": "2330_TW.json",
     "bars": 484,
-    "last_close": 2175.0,
-    "last_date": "2026-04-29"
+    "last_close": 2390.0,
+    "last_date": "2026-06-25"
   },
   "0056.TW": {
     "name": "元大高股息",
     "file": "0056_TW.json",
-    "bars": 484,
-    "last_close": 40.86,
-    "last_date": "2026-04-29"
+    "bars": 485,
+    "last_close": 53.2,
+    "last_date": "2026-06-25"
   },
   "006208.TW": {
     "name": "富邦台50",
     "file": "006208_TW.json",
-    "bars": 484,
-    "last_close": 210.15,
-    "last_date": "2026-04-29"
+    "bars": 485,
+    "last_close": 248.1,
+    "last_date": "2026-06-25"
   },
   "00878.TW": {
     "name": "國泰永續高股息",
     "file": "00878_TW.json",
-    "bars": 484,
-    "last_close": 25.25,
-    "last_date": "2026-04-29"
+    "bars": 485,
+    "last_close": 33.75,
+    "last_date": "2026-06-25"
   },
   "SPY": {
     "name": "S&P 500 ETF",
     "file": "SPY.json",
     "bars": 501,
-    "last_close": 711.69,
-    "last_date": "2026-04-28"
+    "last_close": 733.24,
+    "last_date": "2026-06-24"
   },
   "VOO": {
     "name": "Vanguard S&P 500",
     "file": "VOO.json",
     "bars": 501,
-    "last_close": 654.26,
-    "last_date": "2026-04-28"
+    "last_close": 675.69,
+    "last_date": "2026-06-24"
   },
   "VTI": {
     "name": "Vanguard 美國全市場",
     "file": "VTI.json",
     "bars": 501,
-    "last_close": 350.63,
-    "last_date": "2026-04-28"
+    "last_close": 363.65,
+    "last_date": "2026-06-24"
   },
   "QQQ": {
     "name": "NASDAQ 100",
     "file": "QQQ.json",
-    "bars": 501,
-    "last_close": 657.55,
-    "last_date": "2026-04-28"
+    "bars": 502,
+    "last_close": 710.62,
+    "last_date": "2026-06-24"
   },
   "AAPL": {
     "name": "Apple",
     "file": "AAPL.json",
     "bars": 501,
-    "last_close": 270.71,
-    "last_date": "2026-04-28"
+    "last_close": 293.08,
+    "last_date": "2026-06-24"
   },
   "NVDA": {
     "name": "NVIDIA",
     "file": "NVDA.json",
     "bars": 501,
-    "last_close": 213.17,
-    "last_date": "2026-04-28"
+    "last_close": 199.0,
+    "last_date": "2026-06-24"
   }
 }

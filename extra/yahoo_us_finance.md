@@ -1,106 +1,106 @@
 # Yahoo Finance - Top Stories
 
 > 美股每日重點新聞。
-> 來源：[https://finance.yahoo.com/news/rssindex](https://finance.yahoo.com/news/rssindex)　|　爬取時間：2026-04-29 10:11
+> 來源：[https://finance.yahoo.com/news/rssindex](https://finance.yahoo.com/news/rssindex)　|　爬取時間：2026-06-25 19:29
 
 ---
 
-### 1. [Embree Financial Purchased Shares Worth $13.1 Million in iShares' CORO. Is This ETF a Buy?](https://finance.yahoo.com/markets/stocks/articles/embree-financial-purchased-shares-worth-141801203.html)
-*2026-04-27*
+### 1. [Alignment Healthcare Stock Watch: Why This $550,000 Insider Sale Shouldn't Spook Investors](https://finance.yahoo.com/markets/stocks/articles/alignment-healthcare-stock-watch-why-232308020.html)
+*2026-06-23*
 
 ---
 
-### 2. [With Aluminum Prices Soaring, This Stock Is Up 230% in the Past Year](https://finance.yahoo.com/markets/stocks/articles/aluminum-prices-soaring-stock-230-141502376.html)
-*2026-04-27*
+### 2. [AMEN Properties Just Announced a 25% Dividend Increase. What This Means for the High-Yield Royalty Stock.](https://finance.yahoo.com/markets/stocks/articles/amen-properties-just-announced-25-233002685.html)
+*2026-06-23*
 
 ---
 
-### 3. [Intuit (INTU) Just Joined the Fed’s Instant Payments Network](https://finance.yahoo.com/markets/stocks/articles/intuit-intu-just-joined-fed-141618871.html)
-*2026-04-27*
+### 3. [FedEx boost revenue behind premium parcel, freight volumes](https://finance.yahoo.com/markets/stocks/articles/fedex-boost-revenue-behind-premium-233524517.html)
+*2026-06-23*
 
 ---
 
-### 4. [This Trump Policy Shift Could Be a Game Changer for Cannabis Stocks: 2 Stocks to Watch Now](https://finance.yahoo.com/markets/stocks/articles/trump-policy-shift-could-game-141755417.html)
-*2026-04-27*
+### 4. [NEOS Equity High Income ETFs: Next Evolution Options Strategies](https://finance.yahoo.com/markets/options/articles/neos-equity-high-income-etfs-010012676.html)
+*2026-06-24*
 
 ---
 
-### 5. [AngloGold Ashanti plc (AU): Billionaire Howard Marks Continues to Hold Sizeable Stake](https://finance.yahoo.com/markets/stocks/articles/anglogold-ashanti-plc-au-billionaire-141701969.html)
-*2026-04-27*
+### 5. [Will the housing market crash in 2026?](https://finance.yahoo.com/personal-finance/mortgages/article/will-the-housing-market-crash-in-2026-170038540.html)
+*2024-07-05*
 
 ---
 
-### 6. [Is Zscaler (ZS) One of the Best Falling Stocks to Invest In Now?](https://finance.yahoo.com/markets/stocks/articles/zscaler-zs-one-best-falling-141539337.html)
-*2026-04-27*
+### 6. [Super Micro Computer Is Trading at Its Best Valuation in 18 Months. Should You Buy the Dip?](https://finance.yahoo.com/markets/stocks/articles/super-micro-computer-trading-best-232700614.html)
+*2026-06-23*
 
 ---
 
-### 7. [This Analyst Just Cut Their Rating on DraftKings Stock. Here's Why.](https://finance.yahoo.com/markets/stocks/articles/analyst-just-cut-rating-draftkings-141539670.html)
-*2026-04-27*
+### 7. [The Trillion-Dollar AI Shockwave Nobody Is Ready For](https://finance.yahoo.com/technology/ai/articles/trillion-dollar-ai-shockwave-nobody-000000675.html)
+*2026-06-24*
 
 ---
 
-### 8. [Amazon Stock Surges Ahead of Q1 Earnings: What Lies Ahead?](https://finance.yahoo.com/markets/stocks/articles/amazon-stock-surges-ahead-q1-141752681.html)
-*2026-04-27*
+### 8. [KB Home Q2 2026 Earnings Call Summary](https://finance.yahoo.com/real-estate/articles/kb-home-q2-2026-earnings-002304086.html)
+*2026-06-24*
 
 ---
 
-### 9. [Have software stocks reached an extreme washout yet?](https://finance.yahoo.com/news/have-software-stocks-reached-an-extreme-washout-yet-141914857.html)
-*2026-04-27*
+### 9. [Samsung Electronics considers share buyback for stock bonuses, details undecided](https://finance.yahoo.com/markets/stocks/articles/samsung-electronics-plans-90-trln-013557501.html)
+*2026-06-24*
 
 ---
 
-### 10. [This Forecast Could Spell Trouble for Micron Technology Stock](https://finance.yahoo.com/markets/stocks/articles/forecast-could-spell-trouble-micron-142000770.html)
-*2026-04-27*
+### 10. [NatPower and Tesla Strike 25 GWh European Battery Storage Deal](https://finance.yahoo.com/energy/articles/natpower-tesla-strike-25-gwh-014121872.html)
+*2026-06-24*
 
 ---
 
-### 11. [Jim Cramer Proven Right About Intel (INTC) Shares](https://finance.yahoo.com/markets/stocks/articles/jim-cramer-proven-intel-intc-141958892.html)
-*2026-04-27*
+### 11. [AST SpaceMobile vs. GE Aerospace: Which Stock Is a Better Buy in 2026?](https://finance.yahoo.com/markets/stocks/articles/ast-spacemobile-vs-ge-aerospace-232637147.html)
+*2026-06-23*
 
 ---
 
-### 12. [Jim Cramer Discusses NVIDIA (NVDA) Shares](https://finance.yahoo.com/markets/stocks/articles/jim-cramer-discusses-nvidia-nvda-142050782.html)
-*2026-04-27*
+### 12. [International Business Machines (IBM) Soars on New Analyst Upgrade](https://finance.yahoo.com/markets/stocks/articles/international-business-machines-ibm-soars-015624363.html)
+*2026-06-24*
 
 ---
 
-### 13. [Jim Cramer Shares Why You Should Buy Advanced Micro Devices (AMD)](https://finance.yahoo.com/markets/stocks/articles/jim-cramer-shares-why-buy-142141585.html)
-*2026-04-27*
+### 13. [GE Healthcare (GEHC) Gets Boost from Upbeat Rating, Double-Digit PT Hike](https://finance.yahoo.com/markets/stocks/articles/ge-healthcare-gehc-gets-boost-015838875.html)
+*2026-06-24*
 
 ---
 
-### 14. [Strategy (MSTR) Is Now All-In on Bitcoin; Cantor Just Raised Its Target Again](https://finance.yahoo.com/markets/crypto/articles/strategy-mstr-now-bitcoin-cantor-141421037.html)
-*2026-04-27*
+### 14. [Butterfly Network (BFLY) Jumps as Tech Sector Falters — Here’s Why](https://finance.yahoo.com/technology/articles/butterfly-network-bfly-jumps-tech-020145048.html)
+*2026-06-24*
 
 ---
 
-### 15. [Tom Lee's BitMine Makes Biggest Ethereum Buy So Far in 2026, Hitting 5 Million ETH Milestone](https://finance.yahoo.com/markets/crypto/articles/tom-lees-bitmine-makes-biggest-142154484.html)
-*2026-04-27*
+### 15. [Zeta Global (ZETA) Clinches New Deal, Shares Climb](https://finance.yahoo.com/technology/ai/articles/zeta-global-zeta-clinches-deal-020330210.html)
+*2026-06-24*
 
 ---
 
-### 16. [BitMine Buys $236 Million Of ETH, Calls It ‘Wartime Store Of Value’](https://finance.yahoo.com/markets/crypto/articles/bitmine-buys-236-million-eth-141400766.html)
-*2026-04-27*
+### 16. [India’s MoEngage bets that the future of marketing is millions of AI agents](https://finance.yahoo.com/technology/ai/articles/india-moengage-bets-future-marketing-233000037.html)
+*2026-06-23*
 
 ---
 
-### 17. [Alphabet (GOOGL) Is One of Jim Cramer’s Top Quantum Computing Stocks](https://finance.yahoo.com/sectors/technology/articles/alphabet-googl-one-jim-cramer-142219680.html)
-*2026-04-27*
+### 17. [Bath & Body Works (BBWI) Inks New Deal, Shares Climb Higher](https://finance.yahoo.com/markets/stocks/articles/bath-body-works-bbwi-inks-020527563.html)
+*2026-06-24*
 
 ---
 
-### 18. [Telephone and Data Systems Inc. (TDS): Billionaire Howard Marks Continues to Be Bullish](https://finance.yahoo.com/markets/stocks/articles/telephone-data-systems-inc-tds-142517166.html)
-*2026-04-27*
+### 18. [Varonis Systems (VRNS) Climbs Higher on Sale Buzz](https://finance.yahoo.com/markets/stocks/articles/varonis-systems-vrns-climbs-higher-020728353.html)
+*2026-06-24*
 
 ---
 
-### 19. [Jim Cramer Likes Carvana (CVNA) Stock](https://finance.yahoo.com/markets/stocks/articles/jim-cramer-likes-carvana-cvna-142459614.html)
-*2026-04-27*
+### 19. [Viking Therapeutics (VKTX) Soars Higher — Medicare Could Hold The Answer](https://finance.yahoo.com/healthcare/articles/viking-therapeutics-vktx-soars-higher-021205647.html)
+*2026-06-24*
 
 ---
 
-### 20. [JBS faces another US strike](https://finance.yahoo.com/economy/policy/articles/jbs-faces-another-us-strike-142359295.html)
-*2026-04-27*
+### 20. [Iovance (IOVA) Surges 9.4% on Regulatory Nod](https://finance.yahoo.com/healthcare/articles/iovance-iova-surges-9-4-021846945.html)
+*2026-06-24*
 
 ---
