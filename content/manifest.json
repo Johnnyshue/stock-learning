@@ -56,6 +56,11 @@
       "title": "Ch0.9 新手畢業檢核表：你該會的全部清單（自我打勾）"
     },
     {
+      "order": "00k",
+      "file": "ch00k_worked_case.md",
+      "title": "Ch0.10 範例實戰：帶你完整分析一支股票（好例 vs 地雷例）"
+    },
+    {
       "order": "00",
       "file": "ch00_mindset.md",
       "title": "Ch0 投資前的心態建設"
