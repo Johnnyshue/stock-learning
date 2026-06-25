@@ -26,6 +26,11 @@
       "title": "Ch0.3 技術面・籌碼面白話篇（K線/均線/量/法人/融資券/KD/MACD）"
     },
     {
+      "order": "00e",
+      "file": "ch00e_first_trade.md",
+      "title": "Ch0.4 手把手：從開戶到買進第一筆 ETF（零基礎白話）"
+    },
+    {
       "order": "00",
       "file": "ch00_mindset.md",
       "title": "Ch0 投資前的心態建設"
