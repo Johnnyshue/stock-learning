@@ -1,6 +1,16 @@
 {
   "chapters": [
     {
+      "order": "00a",
+      "file": "ch00a_beginner_quickstart.md",
+      "title": "Ch0.0 完全新手懶人包（什麼都不懂先看這篇）"
+    },
+    {
+      "order": "00b",
+      "file": "ch00b_dividend_plain.md",
+      "title": "Ch0.1 存股配息白話篇（不賣股票也能領錢？）"
+    },
+    {
       "order": "00",
       "file": "ch00_mindset.md",
       "title": "Ch0 投資前的心態建設"
