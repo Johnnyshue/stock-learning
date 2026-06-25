@@ -1,6 +1,11 @@
 {
   "chapters": [
     {
+      "order": "map",
+      "file": "ch00_map.md",
+      "title": "🗺️ 新手學習地圖（完全不懂先從這裡開始）"
+    },
+    {
       "order": "00a",
       "file": "ch00a_beginner_quickstart.md",
       "title": "Ch0.0 完全新手懶人包（什麼都不懂先看這篇）"
@@ -14,6 +19,11 @@
       "order": "00c",
       "file": "ch00c_fundamental_9.md",
       "title": "Ch0.2 看懂一支股票：基本面九大指標白話速查（夯翻鼠 FQ 版）"
+    },
+    {
+      "order": "00d",
+      "file": "ch00d_technical_plain.md",
+      "title": "Ch0.3 技術面・籌碼面白話篇（K線/均線/量/法人/融資券/KD/MACD）"
     },
     {
       "order": "00",
