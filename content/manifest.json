@@ -31,6 +31,11 @@
       "title": "Ch0.4 手把手：從開戶到買進第一筆 ETF（零基礎白話）"
     },
     {
+      "order": "00f",
+      "file": "ch00f_practice.md",
+      "title": "Ch0.5 實戰練習：用假錢練手感 + 何時賣的規則（不靠預測）"
+    },
+    {
       "order": "00",
       "file": "ch00_mindset.md",
       "title": "Ch0 投資前的心態建設"
